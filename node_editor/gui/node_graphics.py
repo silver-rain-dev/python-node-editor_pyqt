@@ -1,5 +1,5 @@
-from PySide6 import QtCore, QtGui, QtWidgets
-from PySide6.QtCore import Qt
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import Qt
 
 from node_editor.common import Node_Status
 

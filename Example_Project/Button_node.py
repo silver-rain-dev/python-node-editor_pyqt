@@ -1,4 +1,4 @@
-from PySide6 import QtWidgets
+from PyQt5 import QtWidgets
 
 from node_editor.node import Node
 
@@ -30,6 +30,9 @@ class Button_Node(Node):
         proxy.setParentItem(self)
 
         super().init_widget()
+
+    def compute(self):
+        pass
 
     def btn_cmd(self):
         print("btn command")

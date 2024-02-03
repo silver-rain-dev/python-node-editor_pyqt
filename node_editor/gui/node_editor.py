@@ -1,6 +1,8 @@
+
+#import os, sys; sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from contextlib import suppress
 
-from PySide6 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 
 from node_editor.connection import Connection
 from node_editor.node import Node

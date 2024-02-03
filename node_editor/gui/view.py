@@ -1,4 +1,4 @@
-from PySide6 import QtCore, QtGui, QtOpenGLWidgets, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 from node_editor.node import Node
 
@@ -18,7 +18,7 @@ class View(QtWidgets.QGraphicsView):
 
     _mouse_wheel_zoom_rate = 0.0015
 
-    request_node = QtCore.Signal(object)
+    request_node = QtCore.pyqtSignal(object)
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -28,7 +28,7 @@ class View(QtWidgets.QGraphicsView):
         gl_format = QtGui.QSurfaceFormat()
         gl_format.setSamples(10)
         QtGui.QSurfaceFormat.setDefaultFormat(gl_format)
-        gl_widget = QtOpenGLWidgets.QOpenGLWidget()
+        gl_widget = QtWidgets.QOpenGLWidget()
 
         self.currentScale = 1
         self._pan = False

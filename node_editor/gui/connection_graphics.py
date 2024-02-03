@@ -1,9 +1,9 @@
-from PySide6 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Connection_Graphics(QtWidgets.QGraphicsPathItem):
     """
-    A Connection represents a graphical connection between two NodePorts in a PySide6 application.
+    A Connection represents a graphical connection between two NodePorts in a PyQt5 application.
 
     Attributes:
     start_pin (NodePort): The NodePort where the connection starts.
@@ -32,7 +32,8 @@ class Connection_Graphics(QtWidgets.QGraphicsPathItem):
         self.setFlag(QtWidgets.QGraphicsPathItem.ItemIsSelectable)
 
         self.setPen(QtGui.QPen(QtGui.QColor(200, 200, 200), 2))
-        self.setBrush(QtCore.Qt.NoBrush)
+        #QtCore.Qt.NoBrush
+        self.setBrush(QtGui.QBrush(QtCore.Qt.NoBrush))
         self.setZValue(-1)
 
         self.start_pos = QtCore.QPointF()

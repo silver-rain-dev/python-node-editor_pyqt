@@ -1,4 +1,4 @@
-from PySide6 import QtWidgets
+from PyQt5 import QtWidgets
 
 from node_editor.node import Node
 from Example_Project.common_widgets import FloatLineEdit

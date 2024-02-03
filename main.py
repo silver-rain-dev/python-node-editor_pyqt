@@ -4,18 +4,19 @@ A simple Node Editor application that allows the user to create, modify and conn
 The application consists of a main window that contains a splitter with a Node List and a Node Widget. The Node List
 shows a list of available node types, while the Node Widget is where the user can create, edit and connect nodes.
 
-This application uses PySide6 as a GUI toolkit.
+This application uses PyQt5 as a GUI toolkit.
 
-Author: Bryan Howard
+Original Author: Bryan Howard
 Repo: https://github.com/bhowiebkr/simple-node-editor
 """
+import os, sys; sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 import logging
 from pathlib import Path
 import importlib
 import inspect
 
-from PySide6 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 from node_editor.gui.node_list import NodeList
 from node_editor.gui.node_widget import NodeWidget
@@ -24,7 +25,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 class NodeEditor(QtWidgets.QMainWindow):
-    OnProjectPathUpdate = QtCore.Signal(Path)
+    OnProjectPathUpdate = QtCore.pyqtSignal(Path)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -42,11 +43,11 @@ class NodeEditor(QtWidgets.QMainWindow):
         file_menu = QtWidgets.QMenu("File", self)
         self.menuBar().addMenu(file_menu)
 
-        load_action = QtGui.QAction("Load Project", self)
+        load_action = QtWidgets.QAction("Load Project", self)
         load_action.triggered.connect(self.get_project_path)
         file_menu.addAction(load_action)
 
-        save_action = QtGui.QAction("Save Project", self)
+        save_action = QtWidgets.QAction("Save Project", self)
         save_action.triggered.connect(self.save_project)
         file_menu.addAction(save_action)
 
