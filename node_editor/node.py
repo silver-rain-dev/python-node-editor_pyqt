@@ -2,6 +2,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 
 from node_editor.pin import Pin
+from node_editor.execution_pin import ExecutionPin
+from node_editor.data_pin import DataPin
 from node_editor.gui.node_graphics import Node_Graphics
 from node_editor.common import Node_Status
 
@@ -70,11 +72,10 @@ class Node(Node_Graphics):
             None: This method doesn't return anything.
 
         """
-        pin = Pin(self, self.scene())
+        pin = ExecutionPin(self, self.scene()) if execution else DataPin(self, self.scene())
         pin.is_output = is_output
         pin.set_name(name)
         pin.node = self
-        pin.set_execution(execution)
 
         self._pins.append(pin)
 
