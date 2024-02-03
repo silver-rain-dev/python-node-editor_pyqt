@@ -20,8 +20,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 from node_editor.gui.node_list import NodeList
 from node_editor.gui.node_widget import NodeWidget
+from node_editor.interpreter import NodeGraph
+from node_editor.debug.logger_filters import NodeGraphFilter
 
 logging.basicConfig(level=logging.DEBUG)
+logging.getLogger().addFilter(NodeGraphFilter())
 
 
 class NodeEditor(QtWidgets.QMainWindow):
@@ -64,17 +67,23 @@ class NodeEditor(QtWidgets.QMainWindow):
         left_widget = QtWidgets.QWidget()
         self.splitter = QtWidgets.QSplitter()
         self.node_widget = NodeWidget(self)
+        self.run_btn = QtWidgets.QPushButton('Run Graph', self)
+        self.run_btn.clicked.connect(self.on_run_graph)
 
         # Add Widgets to layouts
         self.splitter.addWidget(left_widget)
         self.splitter.addWidget(self.node_widget)
         left_widget.setLayout(left_layout)
+        left_layout.addWidget(self.run_btn)
         left_layout.addWidget(self.node_list)
         main_layout.addWidget(self.splitter)
 
         # Load the example project
         example_project_path = (Path(__file__).parent.resolve() / 'Example_project')
         self.load_project(example_project_path)
+
+        # Load always load nodes
+        self.load_project(os.path.dirname(os.path.realpath(__file__)) + "\\node_editor\\nodes")
 
         # Restore GUI from last state
         if settings.contains("geometry"):
@@ -150,6 +159,9 @@ class NodeEditor(QtWidgets.QMainWindow):
         self.settings.setValue("splitterSize", self.splitter.saveState())
         QtWidgets.QWidget.closeEvent(self, event)
 
+    def on_run_graph(self):
+        node_graph = self.node_widget.node_editor.build_execution_graph()
+        node_graph.DFS()
 
 if __name__ == "__main__":
     import sys

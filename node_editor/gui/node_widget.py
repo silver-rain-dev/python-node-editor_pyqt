@@ -1,6 +1,5 @@
 import json
 import uuid
-from collections import OrderedDict
 
 from PyQt5 import QtGui, QtWidgets
 
@@ -97,7 +96,7 @@ class NodeWidget(QtWidgets.QWidget):
             start_pin = self.node_lookup[c["start_id"]].get_pin(c["start_pin"])
             end_pin = self.node_lookup[c["end_id"]].get_pin(c["end_pin"])
 
-            print("start_pin", start_pin)
+            #print("start_pin", start_pin)
 
             if start_pin:
                 connection.set_start_pin(start_pin)

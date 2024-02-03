@@ -7,8 +7,13 @@ from PyQt5 import QtCore, QtWidgets
 from node_editor.connection import Connection
 from node_editor.node import Node
 from node_editor.pin import Pin
+from node_editor.execution_pin import ExecutionPin
+from node_editor.interpreter import NodeGraph
 
-
+"""
+To-do
+⭐ Disable run button if no node is selected
+"""
 class NodeEditor(QtCore.QObject):
     """
     The main class of the node editor. This class handles the logic for creating, connecting, and deleting
@@ -35,7 +40,7 @@ class NodeEditor(QtCore.QObject):
         self.connection = None
         self.port = None
         self.scene = None
-        self._last_selected = None
+        self._last_selected_node = None
 
     def install(self, scene):
         """
@@ -97,16 +102,16 @@ class NodeEditor(QtCore.QObject):
                     self.connection.update_start_and_end_pos()  # to fix the offset
                     return True
 
-                if self._last_selected:
+                if self._last_selected_node:
                     # If we clear the scene, we loose the last selection
                     with suppress(RuntimeError):
-                        self._last_selected.select_connections(False)
+                        self._last_selected_node.select_connections(False)
 
                 if isinstance(item, Node):
                     item.select_connections(True)
-                    self._last_selected = item
+                    self._last_selected_node = item
                 else:
-                    self._last_selected = None
+                    self._last_selected_node = None
 
             elif event.button() == QtCore.Qt.RightButton:
                 # context menu
@@ -159,3 +164,11 @@ class NodeEditor(QtCore.QObject):
                 return True
 
         return super().eventFilter(watched, event)
+
+    def build_execution_graph(self):
+        node_graph = NodeGraph(self._last_selected_node)
+        for item in self.scene.items():
+            assert item != None
+            if item and isinstance(item, ExecutionPin) and item.connection:
+                node_graph.add_edge(item.connection.start_pin.node, item.connection.end_pin.node)
+        return node_graph

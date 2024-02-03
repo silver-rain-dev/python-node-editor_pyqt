@@ -12,6 +12,17 @@ class Node(Node_Graphics):
     def __init__(self):
         super().__init__()
 
+    def __hash__(self):
+        return hash(self.uuid)
+
+    def __eq__(self, other):
+        if self and other:
+            return self.uuid == other.uuid
+        return False
+    
+    def __ne__(self, other):
+        return not(self == other)
+    
     # Override me
     def init_widget(self):
         pass
