@@ -12,7 +12,24 @@ class Add_Node(Node):
         self.add_pin(name="Ex In", is_output=False, execution=True)
         self.add_pin(name="Ex Out", is_output=True, execution=True)
 
-        self.add_pin(name="input A", is_output=False)
-        self.add_pin(name="input B", is_output=False)
+        self.input_pin1 = self.add_pin(name="input A", is_output=False)
+        self.input_pin2 = self.add_pin(name="input B", is_output=False)
         self.add_pin(name="output", is_output=True)
         self.build()
+
+        self.sum = 0
+
+    def execute_inputs(self):
+        if self.input_pin1:
+            self.input_pin1.set_data(self.input_pin1.connected_pin.data)
+        if self.input_pin2:
+            self.input_pin2.set_data(self.input_pin2.connected_pin.data)
+        
+    def compute(self):
+        self.sum = self.input_pin1.data + self.input_pin2.data
+        return self.sum
+
+    def execute_outputs(self):
+        if output_pin := self.get_pin("output"):
+            output_pin.set_data(self.sum)
+        

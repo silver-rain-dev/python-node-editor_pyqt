@@ -22,10 +22,18 @@ class Connection(Connection_Graphics):
     def set_start_pin(self, pin):
         self.start_pin = pin
         self.start_pin.connection = self
+        self.update_connected_pin_pair()
 
     def set_end_pin(self, pin):
         self.end_pin = pin
         self.end_pin.connection = self
+        self.update_connected_pin_pair()
+
+    def update_connected_pin_pair(self):
+        if self.start_pin:
+            self.start_pin.connected_pin = self.end_pin
+        if self.end_pin:
+            self.end_pin.connected_pin = self.start_pin
 
     def nodes(self):
         """

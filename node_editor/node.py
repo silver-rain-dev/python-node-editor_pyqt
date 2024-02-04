@@ -89,6 +89,7 @@ class Node(Node_Graphics):
         pin.node = self
 
         self._pins.append(pin)
+        return pin
 
     def select_connections(self, value):
         """

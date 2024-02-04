@@ -23,6 +23,7 @@ class NodeGraph:
     
     def process_node(self, node):
         logging.debug(f"NodeGraph: Processing {node.title_text}")
+        node.execute()
 
     # A function used by DFS
     def dfs_util(self, node : Node, visited):

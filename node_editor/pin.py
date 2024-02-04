@@ -8,7 +8,8 @@ class Pin(Pin_Graphics):
         self.name = None
         self.node = None
         self.connection = None
-
+        self.connected_pin = None
+        
     def set_execution(self, execution):
         self.execution = execution
         super().set_execution(execution)

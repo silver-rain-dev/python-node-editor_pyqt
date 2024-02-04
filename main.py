@@ -78,6 +78,16 @@ class NodeEditor(QtWidgets.QMainWindow):
         left_layout.addWidget(self.node_list)
         main_layout.addWidget(self.splitter)
 
+        self.load_nodes_and_start_project()
+
+        # Restore GUI from last state
+        if settings.contains("geometry"):
+            self.restoreGeometry(settings.value("geometry"))
+
+            s = settings.value("splitterSize")
+            self.splitter.restoreState(s)
+
+    def load_nodes_and_start_project(self):
         self.imports = {}
 
         # Load always load nodes
@@ -86,13 +96,6 @@ class NodeEditor(QtWidgets.QMainWindow):
         # Load the example project
         example_project_path = (Path(__file__).parent.resolve() / 'Example_project')
         self.load_project(example_project_path)
-
-        # Restore GUI from last state
-        if settings.contains("geometry"):
-            self.restoreGeometry(settings.value("geometry"))
-
-            s = settings.value("splitterSize")
-            self.splitter.restoreState(s)
 
     def save_project(self):
         file_dialog = QtWidgets.QFileDialog()

@@ -11,5 +11,11 @@ class Print_Node(Node):
 
         self.add_pin(name="Ex In", is_output=False, execution=True)
 
-        self.add_pin(name="input", is_output=False)
+        self.input_pin = self.add_pin(name="input", is_output=False)
         self.build()
+
+    def execute_inputs(self):
+        self.input_pin.set_data(self.input_pin.connected_pin.data)
+
+    def compute(self):
+        print(self.input_pin.data)

@@ -12,7 +12,7 @@ class Scaler_Node(Node):
         self.type_text = "Constants"
         self.set_color(title_color=(255, 165, 0))
 
-        self.add_pin(name="value", is_output=True)
+        self.output_pin = self.add_pin(name="value", is_output=True)
 
         self.build()
 
@@ -30,3 +30,10 @@ class Scaler_Node(Node):
         proxy.setParentItem(self)
 
         super().init_widget()
+
+        self.scaler_line.textChanged.connect(self.on_text_changed)
+    
+    def on_text_changed(self):
+        self.output_pin.set_data(float(str(self.scaler_line.text())))
+    
+    
