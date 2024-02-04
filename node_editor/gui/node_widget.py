@@ -120,8 +120,8 @@ class NodeWidget(QtWidgets.QWidget):
                 nodes = item.nodes()
                 start_id = str(nodes[0].uuid)
                 end_id = str(nodes[1].uuid)
-                start_pin = item.start_pin.name()
-                end_pin = item.end_pin.name()
+                start_pin = item.start_pin.name
+                end_pin = item.end_pin.name
                 # print(f"Node ids {start_id, end_id}")
                 # print(f"connected ports {item.start_pin.name(), item.end_pin.name()}")
 
