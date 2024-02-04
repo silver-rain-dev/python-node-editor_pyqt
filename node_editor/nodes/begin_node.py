@@ -28,7 +28,3 @@ class Begin_Node(Node):
 
     def compute(self):
         pass
-
-    def btn_cmd(self):
-        print("btn command")
-        self.execute()

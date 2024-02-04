@@ -1,5 +1,4 @@
-
-#import os, sys; sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+import inspect
 from contextlib import suppress
 
 from PyQt5 import QtCore, QtWidgets
@@ -8,12 +7,10 @@ from node_editor.connection import Connection
 from node_editor.node import Node
 from node_editor.pin import Pin
 from node_editor.execution_pin import ExecutionPin
+from node_editor.nodes.begin_node import Begin_Node
 from node_editor.interpreter import NodeGraph
 
-"""
-To-do
-⭐ Disable run button if no node is selected
-"""
+
 class NodeEditor(QtCore.QObject):
     """
     The main class of the node editor. This class handles the logic for creating, connecting, and deleting
@@ -166,9 +163,14 @@ class NodeEditor(QtCore.QObject):
         return super().eventFilter(watched, event)
 
     def build_execution_graph(self):
-        node_graph = NodeGraph(self._last_selected_node)
         for item in self.scene.items():
             assert item != None
-            if item and isinstance(item, ExecutionPin) and item.connection:
+            if isinstance(item, Node):
+                if item.type_text == "Begin Node":
+                        node_graph = NodeGraph(item)
+                        break
+        for item in self.scene.items():
+            assert item != None
+            if isinstance(item, ExecutionPin) and item.connection:
                 node_graph.add_edge(item.connection.start_pin.node, item.connection.end_pin.node)
         return node_graph

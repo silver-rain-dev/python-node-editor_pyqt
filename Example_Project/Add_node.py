@@ -26,7 +26,9 @@ class Add_Node(Node):
             self.input_pin2.set_data(self.input_pin2.connected_pin.data)
         
     def compute(self):
-        self.sum = self.input_pin1.data + self.input_pin2.data
+        num1 = self.input_pin1.data if self.input_pin1.data else 0
+        num2 = self.input_pin2.data if self.input_pin2.data else 0
+        self.sum = num1 + num2
         return self.sum
 
     def execute_outputs(self):
