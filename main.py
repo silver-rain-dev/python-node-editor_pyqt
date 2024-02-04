@@ -47,7 +47,7 @@ class NodeEditor(QtWidgets.QMainWindow):
         self.menuBar().addMenu(file_menu)
 
         load_action = QtWidgets.QAction("Load Project", self)
-        load_action.triggered.connect(self.load_project)
+        load_action.triggered.connect(self.load_project_file)
         file_menu.addAction(load_action)
 
         save_action = QtWidgets.QAction("Save Project", self)
@@ -135,7 +135,7 @@ class NodeEditor(QtWidgets.QMainWindow):
                 self.node_widget.load_scene(json_path, self.imports)
                 break
 
-    def load_project(self):
+    def load_project_file(self):
         project_path = QtWidgets.QFileDialog.getExistingDirectory(None, "Select Project Folder", "")
         if not project_path:
             return
