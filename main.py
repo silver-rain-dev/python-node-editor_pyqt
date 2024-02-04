@@ -24,7 +24,7 @@ from node_editor.interpreter import NodeGraph
 from node_editor.debug.logger_filters import NodeGraphFilter
 
 logging.basicConfig(level=logging.DEBUG)
-#logging.getLogger().addFilter(NodeGraphFilter())
+logging.getLogger().addFilter(NodeGraphFilter())
 
 
 class NodeEditor(QtWidgets.QMainWindow):
@@ -34,7 +34,7 @@ class NodeEditor(QtWidgets.QMainWindow):
         super().__init__(parent)
         self.settings = None
         self.project_path = None
-        self.imports = None  # we will store the project import node types here for now.
+        self.imports = {}  # we will store the project import node types here for now.
 
         icon = QtGui.QIcon("resources\\app.ico")
         self.setWindowIcon(icon)
@@ -47,7 +47,7 @@ class NodeEditor(QtWidgets.QMainWindow):
         self.menuBar().addMenu(file_menu)
 
         load_action = QtWidgets.QAction("Load Project", self)
-        load_action.triggered.connect(self.get_project_path)
+        load_action.triggered.connect(self.load_project)
         file_menu.addAction(load_action)
 
         save_action = QtWidgets.QAction("Save Project", self)
@@ -88,8 +88,6 @@ class NodeEditor(QtWidgets.QMainWindow):
             self.splitter.restoreState(s)
 
     def load_nodes_and_start_project(self):
-        self.imports = {}
-
         # Load always load nodes
         self.load_project(os.path.dirname(os.path.realpath(__file__)) + "\\node_editor\\nodes")
 
@@ -112,8 +110,7 @@ class NodeEditor(QtWidgets.QMainWindow):
         project_path = Path(project_path)
         if project_path.exists() and project_path.is_dir():
             self.project_path = project_path
-
-
+            proj_imports = {}
             for file in project_path.glob("*.py"):
 
                 if not file.stem.endswith('_node'):
@@ -128,16 +125,17 @@ class NodeEditor(QtWidgets.QMainWindow):
                         continue
                     if inspect.isclass(obj):
                         self.imports[obj.__name__] = {"class": obj, "module": module}
+                        proj_imports[obj.__name__] = {"class": obj, "module": module}
                         #break
 
-            self.node_list.update_project(self.imports)
+            self.node_list.update_project(proj_imports)
 
             # work on just the first json file. add the ablitity to work on multiple json files later
             for json_path in project_path.glob("*.json"):
                 self.node_widget.load_scene(json_path, self.imports)
                 break
 
-    def get_project_path(self):
+    def load_project(self):
         project_path = QtWidgets.QFileDialog.getExistingDirectory(None, "Select Project Folder", "")
         if not project_path:
             return
