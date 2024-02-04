@@ -24,7 +24,7 @@ from node_editor.interpreter import NodeGraph
 from node_editor.debug.logger_filters import NodeGraphFilter
 
 logging.basicConfig(level=logging.DEBUG)
-logging.getLogger().addFilter(NodeGraphFilter())
+#logging.getLogger().addFilter(NodeGraphFilter())
 
 
 class NodeEditor(QtWidgets.QMainWindow):
@@ -78,12 +78,14 @@ class NodeEditor(QtWidgets.QMainWindow):
         left_layout.addWidget(self.node_list)
         main_layout.addWidget(self.splitter)
 
-        # Load the example project
-        example_project_path = (Path(__file__).parent.resolve() / 'Example_project')
-        self.load_project(example_project_path)
+        self.imports = {}
 
         # Load always load nodes
         self.load_project(os.path.dirname(os.path.realpath(__file__)) + "\\node_editor\\nodes")
+
+        # Load the example project
+        example_project_path = (Path(__file__).parent.resolve() / 'Example_project')
+        self.load_project(example_project_path)
 
         # Restore GUI from last state
         if settings.contains("geometry"):
@@ -108,7 +110,6 @@ class NodeEditor(QtWidgets.QMainWindow):
         if project_path.exists() and project_path.is_dir():
             self.project_path = project_path
 
-            self.imports = {}
 
             for file in project_path.glob("*.py"):
 
